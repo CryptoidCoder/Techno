@@ -3,7 +3,7 @@
 Passes.py
 
 #Logs/Other Stuff
-output.log
+query.log
 
 #Python Caches
 __pycache__
