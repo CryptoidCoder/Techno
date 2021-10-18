@@ -9,6 +9,7 @@
 - In it should be the following:
 
 - In between the ' ' you need to add your own token
+- You do not need the text or the ''
 ```
 
 Master = 'your name here / what you want Techno to call you'
