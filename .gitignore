@@ -4,6 +4,7 @@ Passes.py
 
 #Logs/Other Stuff
 query.log
+ledfunctions.log
 
 #Python Caches
 __pycache__

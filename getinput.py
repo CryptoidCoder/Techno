@@ -53,6 +53,24 @@ def addnewline(filename,text): #append text to a new line on a file
         file_object.write(text)
         file_object.close()
 
+def listening(mode, value): #turn a LED / printout something if mic is listening
+    if mode == 'silent':
+        if value == True:
+            print() #turn on LED
+            addnewline('ledfunctions.log', f"{datetime.datetime.now()}, {mode}, {value}")
+
+        else:
+            print() # turn off LED
+            addnewline('ledfunctions.log', f"{datetime.datetime.now()}, {mode}, {value}")
+
+    elif mode == 'message':
+        if value == True:
+            printspeak("Listening...")
+            addnewline('ledfunctions.log', f"{datetime.datetime.now()}, {mode}, {value}")
+        else:
+            printspeak("No Longer Listening.")
+            addnewline('ledfunctions.log', f"{datetime.datetime.now()}, {mode}, {value}")
+
 
 def justspeak(audio): # speak what is inputed
     engine.say(audio)
@@ -79,9 +97,10 @@ def myCommand(): #turn sound into text
     my_mic = s_r.Microphone(device_index=1) #my device index is 1, you have to put your device index
     try:
         with my_mic as source:
-            printspeak("Listening...")
+            listening('message', True)
             r.adjust_for_ambient_noise(source) #reduce noise
             audio = r.listen(source) #take voice input from the microphone
+            listening('message', False)
             query = (r.recognize_google(audio))
             query = query.lower()
             log(query)
@@ -94,7 +113,7 @@ def myCommand(): #turn sound into text
 def log(query): #output datetime, query to query.log file
     datetimenow = datetime.datetime.now()
     datetimenow = str(datetimenow)
-    message = "At Time: " + datetimenow + " Techno Recieved: " + query
+    message = "At Time: " + datetimenow + f" {wakeword} Recieved: " + query
     addnewline("query.log",message)
     return message
 
@@ -106,45 +125,44 @@ def fetchlog(): #get latest query from query.log file
 
 def startup(): #what to do on startup
     greetMe()
-    printspeak("Hello My Name is Techno, Your Virtual Helper.")
+    printspeak(f"Hello My Name is {wakeword}, Your Virtual Helper.")
     #query = myCommand()
-
 
 
 startup()
 
 
-while True:
-    while True: #when wakeword spoke, take query input & save it, then thank.
-
-        def show(key):
-            if key == Key.delete:
-                sys.exit()
-                return False
-
-        with Listener(on_press = show) as listener:
-            listener.join()
+loop = True
+while loop == True:
+    while loop == True: #when wakeword spoke, take query input & save it
 
         r = s_r.Recognizer()
         my_mic = s_r.Microphone(device_index=1) #my device index is 1, you have to put your device index
         try:
             with my_mic as source:
+                listening('silent', True)
                 r.adjust_for_ambient_noise(source) #reduce noise
                 audio = r.listen(source) #take voice input from the microphone
+                listening('silent', False)
             query = (r.recognize_google(audio))
             query = query.lower()
             if wakeword in query:
                 printspeak("WakeWord Activated")
                 break
 
-            if 'exit' in query or 'stop' in query or 'end' in query:
+            if 'exit' in query or 'stop' in query or 'end' in query or 'cancel' in query:
                 printspeak("Exiting Session...")
-                sys.exit()
+                loop = False
 
         except:
             print("No Wakeword...")
 
-    myCommand()
+    if loop == True:
+        myCommand()
+        printspeak("Processing...")
+        import processquery
+    
+    else:
+        loop = False
 
-
-    printspeak("Thanks.")
+    

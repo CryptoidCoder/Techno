@@ -1,11 +1,4 @@
-##Functions:
-
-#save query locally
-#run if functions on query
-#if something for the pi, do it
-#if something for another pc, @it on discord, and share data via webhook
-
-
+#imports
 import datetime #to find the date+time
 import sys # to use the system
 
@@ -27,12 +20,15 @@ if 'test' in query:
     print(f"This is a test message: {query}")
 
 elif 'what is the time' in query or 'tell me the time' in query:
-    print(datetime.datetime.now)
+    print(datetime.datetime.now())
 
 
 elif 'exit' in query or 'stop' in query or 'end' in query:
     print("Exiting Session...")
-    sys.exit()
+    quit()
 
 elif 'Error' in query:
     print("Error Has Been Returned - Not Able To Read From query.log File.")
+
+else:
+    print("Command Not Found - Sorry")
