@@ -26,6 +26,10 @@ WakeWord = 'a word to trigger the query taking / what you want to call it'
 - If you use `thing2` for your second argument - it will do `thing2`
 
 
+
 ## Future:
 [Read this TODO File to see what I plan to do in the future](TODO)
+In future this will run on a raspberry pi - and use its LED's & GPIO's
+It will require a microphone & speaker for this.
+
 

@@ -107,6 +107,7 @@ def myCommand(): #turn sound into text
 
     except:
         printspeak("Error taking in audio.") 
+        query = "Error"
     
     return query
 
@@ -158,9 +159,11 @@ while loop == True:
             print("No Wakeword...")
 
     if loop == True:
-        myCommand()
-        printspeak("Processing...")
-        import processquery
+        new_query = myCommand()
+        printspeak(f"Processing '{new_query}'...")
+        #import processquery #use the processquery.py file to manage the query
+        processfile = f"{os.getcwd()}\\processquery.py"
+        os.startfile(processfile)
     
     else:
         loop = False
